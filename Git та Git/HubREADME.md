@@ -34,7 +34,8 @@ git push origin main
 Якщо хочеш зберегти точну історію з merge-комітом:
 
 git pull --no-rebase origin main   # або: git pull --rebase false
-# Розв'язуєш конфлікти:
+### Розв'язуєш конфлікти:
 git add <файл/и>
 git commit                         # завершити merge-коміт
 git push origin main
+
