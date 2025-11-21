@@ -30,14 +30,14 @@ sudo systemctl status ssh
 
 If not — start and enable it:
 
-sudo systemctl enable ssh
-sudo systemctl start ssh
+    sudo systemctl enable ssh
+    sudo systemctl start ssh
 
 🌐 2. Find the Ubuntu VM’s IP address
 
 Run:
 
-ip a
+    ip a
 
 
 Look for something like:
@@ -82,7 +82,8 @@ Attached to: Bridged Adapter
 Now, on your macOS or Windows terminal, run:
 
 🧩 If using NAT + Port Forwarding:
-ssh -p 2222 yourusername@127.0.0.1
+
+    ssh -p 2222 yourusername@127.0.0.1
 
 
 (Replace yourusername with your Ubuntu login name — e.g., ubuntu or julia.)
@@ -207,16 +208,16 @@ SSH ключі в ~/.ssh/authorized_keys
 
 Найпростіше — скопіювати SSH ключі з root у admin:
 
-sudo mkdir -p /home/admin/.ssh
-sudo cp /root/.ssh/authorized_keys /home/admin/.ssh/
-sudo chown -R admin:admin /home/admin/.ssh
-sudo chmod 700 /home/admin/.ssh
-sudo chmod 600 /home/admin/.ssh/authorized_keys
+     sudo mkdir -p /home/admin/.ssh
+     sudo cp /root/.ssh/authorized_keys /home/admin/.ssh/
+     sudo chown -R admin:admin /home/admin/.ssh
+     sudo chmod 700 /home/admin/.ssh
+     sudo chmod 600 /home/admin/.ssh/authorized_keys
 
 
 Це увімкне SSH-доступ тим самим ключем, яким ти заходиш як root.
 
 Тепер спробуй увійти:
 
-ssh admin@SERVER_IP
+    ssh admin@SERVER_IP
 
