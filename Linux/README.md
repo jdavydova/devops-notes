@@ -123,3 +123,100 @@ LISTEN 0 128 0.0.0.0:22 ...
 
 
 - # Як створити користувача
+
+✅ Create the user without creating a same-named group
+
+Use useradd with --gid to assign an existing group, or just tell adduser to skip creating the group.
+
+Option 1 — Create user and assign existing admin group
+
+    sudo useradd -m -g admin admin
+    sudo passwd admin
+
+Option 2 — Create user with its own group, then add to admin group
+
+This avoids the conflict entirely:
+
+    sudo adduser adminuser
+    sudo usermod -aG admin adminuser
+
+
+(Use any username except admin.)
+
+✅ Check whether user exists
+
+Run:
+
+    getent passwd admin
+
+
+If it returns nothing — the user truly doesn’t exist.
+
+Check the group:
+
+    getent group admin
+
+
+This will show the existing admin group.
+
+⭐ Recommended (Ubuntu best practice)
+
+Ubuntu doesn’t use the admin group anymore.
+Modern Ubuntu uses sudo group.
+
+Better approach:
+
+    sudo adduser admin
+    sudo usermod -aG sudo admin
+
+
+But since the group admin blocks creation, instead:
+
+    sudo adduser admin2
+    sudo usermod -aG sudo admin2
+
+If you REALLY want username = admin
+
+Here is the clean method:
+
+    sudo groupdel admin
+    sudo adduser admin
+    sudo usermod -aG sudo admin
+
+
+⚠️ Only do this if nothing important uses the admin group.
+- Щоб увімкнути SSH-вхід для користувача admin, потрібно зробити 2 речі:
+
+✅ 1. Переконатися, що у admin є доступ через SSH-ключ або пароль
+
+SSH-доступ працює автоматично, якщо в користувача є:
+
+пароль
+або
+
+SSH ключі в ~/.ssh/authorized_keys
+
+Перевір, чи існує папка .ssh у admin:
+
+   ls -la /home/admin
+
+
+Якщо немає папки .ssh, то ключі не скопійовані → треба зробити крок 2.
+
+✅ 2. Дозволити SSH для admin (скопіювати ключі root)
+
+Найпростіше — скопіювати SSH ключі з root у admin:
+
+sudo mkdir -p /home/admin/.ssh
+sudo cp /root/.ssh/authorized_keys /home/admin/.ssh/
+sudo chown -R admin:admin /home/admin/.ssh
+sudo chmod 700 /home/admin/.ssh
+sudo chmod 600 /home/admin/.ssh/authorized_keys
+
+
+Це увімкне SSH-доступ тим самим ключем, яким ти заходиш як root.
+
+Тепер спробуй увійти:
+
+ssh admin@SERVER_IP
+
